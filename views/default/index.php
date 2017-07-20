@@ -20,7 +20,6 @@
         <?php else :?>
             <?php echo 'Нет товаров для данной категории';?>
         <?php endif; ?>
-        <div class="cleaner"></div>
-            <?php require_once 'slider.php';?>     
+        <div class="cleaner"></div>   
     </div> <!-- END of main -->
 <?php require_once 'footer.php';?>

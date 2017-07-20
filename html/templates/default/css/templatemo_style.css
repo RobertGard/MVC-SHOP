@@ -116,7 +116,7 @@ h6 { font-size: 12px; margin: 0 0 5px; padding: 0; }
 #header_right { float: right; display: inline-block;	 padding-top: 20px; }
 
 #language { margin: 0; padding: 0; list-style: none }
-#language li { float: right; display: block; margin-left: 5px }
+#language li { float: left; display: block; margin-left: 5px }
 
 #templatemo_search { clear: both; margin-top: 5px; width: 232px; height: 31px; background: url(../images/templatemo_searchbox.png) }
 #templatemo_search form {
@@ -313,4 +313,8 @@ table td { border-bottom: 1px solid #ccc }
 
 .underline{
     text-decoration:underline;
+}
+
+.hide{
+    display: none;
 }

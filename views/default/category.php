@@ -13,7 +13,6 @@
         </div> <!-- END of content -->
         <div class="cleaner"></div>
         
-    <?php require_once 'slider.php';?> 
         
     </div> <!-- END of main -->
 <?php require_once 'footer.php';?>

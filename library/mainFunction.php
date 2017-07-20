@@ -7,12 +7,12 @@
  */
 
 //Функция подключения файлов-контроллеров и функций-экшенов
-function loadPage($db,$controlerName, $actionName,$idObject){
+function loadPage($db,$controlerName, $actionName,$idObject,$cartCntItems){
     $controler = $controlerName."Controller";
     $action = $actionName."Action";
     
     require_once PathPrefix.$controler.PathPostfix;
-    echo $action($db,$idObject);
+    echo $action($db,$idObject,$cartCntItems);
 }
 
 /**

@@ -6,10 +6,9 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="<?php echo PathTemplates;?>css/templatemo_style.css" rel="stylesheet" type="text/css" />
-
 <link rel="stylesheet" type="text/css" href="<?php echo PathTemplates;?>css/ddsmoothmenu.css" />
-
-<script type="text/javascript" src="<?php echo PathTemplates;?>js/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo PathTemplates;?>js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="<?php echo PathTemplates;?>js/mainfunction.js"></script>
 <script type="text/javascript" src="<?php echo PathTemplates;?>js/ddsmoothmenu.js">
 </script>
 
@@ -26,34 +25,6 @@ ddsmoothmenu.init({
 </script>
 
 <link rel="stylesheet" type="text/css" href="<?php echo PathTemplates;?>css/styles.css" />
-<script language="javascript" type="text/javascript" src="<?php echo PathTemplates;?>scripts/mootools-1.2.1-core.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo PathTemplates;?>scripts/mootools-1.2-more.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo PathTemplates;?>scripts/slideitmoo-1.1.js"></script>
-<script language="javascript" type="text/javascript">
-window.addEvents({
-	'domready': function(){
-            /* thumbnails example , div containers */
-            new SlideItMoo({
-                overallContainer: 'SlideItMoo_outer',
-		elementScrolled: 'SlideItMoo_inner',
-		thumbsContainer: 'SlideItMoo_items',		
-		itemsVisible: 5,
-		elemsSlide: 2,
-		duration: 200,
-		itemsSelector: '.SlideItMoo_element',
-		itemWidth: 171,
-		showControls:1});
-		},
-		
-	});
-
-	function clearText(field)
-	{
-		if (field.defaultValue == field.value) field.value = '';
-		else if (field.value == '') field.value = field.defaultValue;
-	}
-</script>
-
 </head>
     
 <body id="home">
@@ -66,12 +37,17 @@ window.addEvents({
     <!-- Заголовок сайта /НАЧАЛО/ -->
         
         <div id="header_right">
-            <ul id="language">
-                <li><a><img src="<?php echo PathTemplates;?>images/usa.png" alt="English" /></a></li>
-                <li><a><img src="<?php echo PathTemplates;?>images/china.png" alt="Chinese" /></a></li>
-                <li><a><img src="<?php echo PathTemplates;?>images/germany.png" alt="Germany" /></a></li>
-                <li><a><img src="<?php echo PathTemplates;?>images/india.png" alt="Indian" /></a></li>
-            </ul>
+            <a href="/?controller=cart" class="add_to_cart" style="float: right;">Корзина</a>
+            <p id="cartBox">
+                <?php echo $cntInCart = !empty($cartCntItems)?$cartCntItems : "Нет"; ?>
+                <?php if($cartCntItems==1): ?>
+                    Товар
+                <?php elseif($cartCntItems<=4): ?>
+                    Товарa
+                <?php else: ?>
+                    Товаров
+                <?php endif; ?>
+            </p>
             <div class="cleaner"></div>
             <div id="templatemo_search">
                 <form action="#" method="get">

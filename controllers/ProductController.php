@@ -14,15 +14,15 @@ require_once '../models/ProductsModel.php'; // Модель продуктов
  * @param type $db
  * @param type $idObject
  */
-function indexAction($db,$idObject){
+function indexAction($db,$idObject,$cartCntItems){
 //Получение родительских категорий с привязкой к дочерним
 $rsAllCat = getParentAndChildrenCat($db);
-    
-//Получение всех товаров из бд
-$allProduct = getAllProduct($db);
 
 //Получение подробной информации о товаре по его id
 $detailProduct = getProductById($db,$idObject);
+
+//Проверяем , есть ли товар в корзине
+$key = in_array($idObject, $_SESSION['cart']);
 
 include_once '../views/default/product.php';
 }

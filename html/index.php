@@ -3,6 +3,12 @@
  * html/index.php
  * Подключение главных функций и определение контролера и их action-функций
  */
+    //Запускаем сессию
+    session_start();
+    
+    if(!isset($_SESSION['cart'])){
+        $_SESSION['cart'] = array();
+    }
     //Подключение главных функций и настроек 
     include_once '../config/config.php';
     include_once '../config/db.php';
@@ -15,5 +21,12 @@
   
     $idObject = isset($_GET['id']) ? intval($_GET['id']) : NULL;
     // данных из адресной строки получены-->
-  
-    loadPage($db,$controlerName, $actionName,$idObject);
+    
+
+    // Инициализация переменной отвечающей за вввод количества товаров в корзине
+    $cartCntItems = count($_SESSION['cart']);
+
+
+    loadPage($db,$controlerName, $actionName,$idObject,$cartCntItems);
+    
+    

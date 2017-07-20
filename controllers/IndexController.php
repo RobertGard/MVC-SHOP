@@ -14,15 +14,12 @@ require_once '../models/ProductsModel.php'; // Модель продуктов
  * @param type $db - подключение к БД
  * @param type $idObject - id из адресной строки
  */
-function indexAction($db,$idObject){
+function indexAction($db,$idObject,$cartCntItems){
     //Получение родительских категорий с привязкой к дочерним
     $rsAllCat = getParentAndChildrenCat($db);
     
     //Получение последних 16 товаров и БД
     $rsProduct = getLastProduct($db,16);
-    
-    //Получение всех товаров из бд
-    $allProduct = getAllProduct($db);
     
     include_once '../views/default/index.php';
 }
