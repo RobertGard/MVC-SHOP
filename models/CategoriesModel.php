@@ -51,3 +51,17 @@ function getParentAndChildrenCat($db){
     }
     return $isArray;
 }
+
+/**
+ * Получение информации о категории по её id из БД
+ * 
+ * @param type $db - инициализация подключения к БД
+ * @param type $idObject - id из адресной строки
+ */
+function getCatById($db,$idObject){
+    $sql = 'SELECT * FROM `categories` WHERE `id` = "'.$idObject.'"';
+    
+    $query = mysqli_query($db, $sql);
+    
+    return mysqli_fetch_assoc($query);
+}
