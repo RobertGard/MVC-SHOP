@@ -42,3 +42,13 @@ function d($values,$farther = FALSE){
         exit();
     }
 }
+
+/**
+ * Функция перенаправления
+ * 
+ * @param type $dir - куда перенаправить
+ */
+function redirect($dir = "/"){
+    header('Location: '.$dir.'');
+    exit;
+}

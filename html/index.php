@@ -26,7 +26,6 @@
     // Инициализация переменной отвечающей за вввод количества товаров в корзине
     $cartCntItems = count($_SESSION['cart']);
 
-
     loadPage($db,$controlerName, $actionName,$idObject,$cartCntItems);
     
     

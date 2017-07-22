@@ -61,3 +61,69 @@ function removeCart(itemId){
     });
     
 }
+
+/**
+ * Получение данных из input,textarea,select
+ * 
+ * @param {type} block - id или class блока 
+ * @returns {unresolved}
+ */
+function getData(block){
+    var hData ={};
+    $('input,textarea,select',block).each(function(){
+        if(this.name && this.name !== ''){
+            hData[this.name] = this.value;
+            console.log('hData[' + this.name + '] = ' + hData[this.name]);
+        }
+    });
+    return hData;
+};
+
+function ShowAndHide(idBlock){
+            $(idBlock).toggle('slow');
+}
+
+/**
+ * Регистрация нового пользователя
+ * 
+ * @param {type} idBox
+ * @returns {undefined}
+ */
+function signUp(idBox){
+   var dataFromBox = getData(idBox);
+    
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/?controller=user&action=signup",
+        data: dataFromBox,
+        dataType: 'json',
+        success: function(data){
+            if(data['success']){
+                location.reload();
+                alert(data['message']);
+            }else{
+                alert(data['message']);
+            }
+        }
+    });
+    
+}
+
+function signIn(idBox){
+    var dataFromBox = getData(idBox);
+    
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: '/?controller=user&action=signin',
+        data: dataFromBox,
+        dataType: 'json',
+        success: function(data){
+            if(data['success']){
+                location.reload();
+            }else{
+                alert(data['message']);
+            }}
+    });
+}
