@@ -69,6 +69,14 @@ function registerNewUser($db,$email,$passwordMD5,$phone,$name){
     return $rs;
 }
 
+/**
+ * Проверка введёных данных пользователем при входе 
+ * 
+ * @param type $db - подключение к БД
+ * @param type $email - email для регистрации
+ * @param type $passwordMD5 - закэшированный пароль для регистрации
+ * @return type
+ */
 function checkOptionsFromSignIn($db,$email,$passwordMD5){
     //Переменная успеха
     $res['success'] = TRUE;
@@ -96,4 +104,74 @@ function checkOptionsFromSignIn($db,$email,$passwordMD5){
     }
         
     return $res;
+}
+
+/**
+ * Получение подробной информации о пользователе зная его id
+ * 
+ * @param type $db - подключение к БД
+ * @param type $idUser
+ */
+function getDetailsUserById($db,$idUser){
+    $sql = 'SELECT * FROM `users` WHERE `id` = "'.$idUser.'" LIMIT 1';
+    $query = mysqli_query($db, $sql);
+    
+    return addInArray($query);
+}
+
+/**
+ * Проверка данных пере update
+ * 
+ * @param type $db - подключение к БД
+ * @param type $email - email Пользователя
+ * @param type $newPass1 - новый пароль 1
+ * @param type $newPass2 - новый пароль 2
+ * @param type $oldPassMD5 - старый пароль
+ */
+function checkDetailsUpdateData($db,$emailUser,$newPass1,$newPass2,$oldPassMD5){
+    $res['success'] = TRUE;
+    
+    $sql = 'SELECT * FROM `users` WHERE `email` = "'.$emailUser.'" AND `password` = "'.$oldPassMD5.'" LIMIT 1';
+    $query = mysqli_query($db,$sql);
+    $key = mysqli_fetch_assoc($query);
+    
+    if(!isset($key['email'])){ // Проверка на правильность паролей
+        $res['success'] = FALSE;
+        $res['message'] = "Старый пароль не верен !";
+     } elseif($newPass1 !== $newPass2) {//Проверка на совпадение паролей
+        $res['success'] = FALSE;
+        $res['message'] = "Пароли не совпадают !"; 
+     }
+    
+     return $res;
+    
+}
+
+/**
+ * Изменение данных пользователя
+ * 
+ * @param type $db - подключение к БД
+ * @param type $newPassMD5 - новый пароль в MD5
+ * @param type $name - новое имя 
+ * @param type $phone - новый телефон
+ */
+function updateUserData($db,$emailUser,$newPassMD5,$name,$phone){
+    //Запрос на обновление данных пользователя
+    $sql = 'UPDATE `users` SET '
+            . '`password` = "'.$newPassMD5.'",'
+            . '`phone` = "'.$phone.'",'
+            . '`name` = "'.$name.'"'
+            . ' WHERE `email` = "'.$emailUser.'"';
+    
+    $query = mysqli_query($db, $sql);
+    
+    if($query){
+        $sql = 'SELECT * FROM `users` WHERE `email` = "'.$emailUser.'" AND `password` = "'.$newPassMD5.'" LIMIT 1';
+        $query = mysqli_query($db, $sql);
+        
+        return mysqli_fetch_assoc($query);
+    }
+    
+    
+    
 }

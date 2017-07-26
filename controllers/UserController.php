@@ -8,6 +8,21 @@
 require_once '../models/CategoriesModel.php'; // Модель категорий
 require_once '../models/ProductsModel.php'; // Модель продуктов
 require_once '../models/UserModel.php'; // Модель продуктов
+
+
+function indexAction($db,$idObject,$cartCntItems){
+    //Получение id пользователя из session
+    $idUser = $_SESSION['user']['id'];
+    
+    //Получение родительских категорий с привязкой к дочерним
+    $rsAllCat = getParentAndChildrenCat($db);
+    
+    //Получение подробной информации о пользователе зная его id
+    $detailsUser = getDetailsUserById($db,$idUser);
+    
+    include_once '../views/default/user.php';
+}
+
 /**
  * Регистрация пользователей
  * 
@@ -49,6 +64,70 @@ function signupAction($db,$idObject,$cartCntItems){
     return json_encode($res);
 }
 
+/**
+ * Изменения данных пользователя
+ * 
+ * @param type $db - инициализация подключения к бд
+ * @param type $idObject - id товара
+ * @param type $cartCntItems - количество товаров в корзине
+ */
+function updateAction($db,$idObject,$cartCntItems){
+    $emailUser = $_SESSION['user']['email'];
+
+    $email = trim($email);// Удаляем отступы
+    
+    $name = isset($_REQUEST['userName']) ? $_REQUEST['userName'] : NULL;
+    $name = trim($name);// Удаляем отступы
+    
+    $phone = isset($_REQUEST['userPhone']) ? $_REQUEST['userPhone'] : NULL;
+    $phone = trim($phone);// Удаляем отступы
+    
+    $newPass1 = isset($_REQUEST['userNewPass1']) ? $_REQUEST['userNewPass1'] : NULL;
+    $newPassMD5 = md5($newPass1);
+    $newPass2 = isset($_REQUEST['userNewPass2']) ? $_REQUEST['userNewPass2'] : NULL;
+    $oldPass = isset($_REQUEST['userOldPass']) ? $_REQUEST['userOldPass'] : NULL;
+    $oldPassMD5 = md5($oldPass);
+    
+    if(empty($newPass1)){
+        $newPassMD5 = $oldPassMD5;
+    }
+            
+    //Проверка получаемых данных
+    $key = checkDetailsUpdateData($db,$emailUser,$newPass1,$newPass2,$oldPassMD5);
+    
+    $rs = array();
+    
+    if ($key['success'] == FALSE){
+    $rs['success'] = $key['success'];
+    $rs['message'] = $key['message'];
+    } else {
+        
+        //Обновление данных пользователя
+        $key = updateUserData($db,$emailUser,$newPassMD5,$name,$phone);
+        
+        if(isset($key['email'])){//если обновление данных прошло успешно
+            //Обновляем в сессии данные о пользователе
+            $_SESSION['user'] = $key;
+            
+            $rs['success'] = TRUE;
+            $rs['message'] = 'Всё прошло успешно !';
+        } else {
+            $rs['success'] = FALSE;
+            $rs['message'] = 'Данные не обновились !' ;
+        }
+        
+    }
+    
+    echo json_encode($rs);
+}
+
+/**
+ * Получение и проверка данных для логин.
+ * 
+ * @param type $db - инициализация подключения к бд
+ * @param type $idObject - id товара
+ * @param type $cartCntItems - количество товаров в корзине
+ */
 function signinAction($db,$idObject,$cartCntItems){
     //Получение введёного email для логинизации
     $email = isset($_REQUEST['emailSI']) ? $_REQUEST['emailSI'] : NULL;

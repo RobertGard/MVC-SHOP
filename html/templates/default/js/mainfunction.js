@@ -110,6 +110,12 @@ function signUp(idBox){
     
 }
 
+/**
+ * Залогиниться используя email и пароль
+ * 
+ * @param {type} idBox
+ * @returns {undefined}
+ */
 function signIn(idBox){
     var dataFromBox = getData(idBox);
     
@@ -122,6 +128,30 @@ function signIn(idBox){
         success: function(data){
             if(data['success']){
                 location.reload();
+            }else{
+                alert(data['message']);
+            }}
+    });
+}
+
+/**
+ * 
+ * @param {type} idBox
+ * @returns {undefined}
+ */
+function updateDetailsUser(idBox){
+    var dataFromBox = getData(idBox);
+    
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: '/?controller=user&action=update',
+        data: dataFromBox,
+        dataType: 'json',
+        success: function(data){
+            if(data['success']){
+                location.reload();
+                alert(data['message']);
             }else{
                 alert(data['message']);
             }}
